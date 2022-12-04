@@ -26,27 +26,25 @@ for line in Lines:
     #print(elf_1, " --- ", elf_2)
 
     while True:
-        if elf_1_first < elf_2_first:  # first start smaller
-            if elf_1_last >= elf_2_last:  # first end bigger or equal
+        if elf_1_first > elf_2_first:
+            if elf_1_first <= elf_2_last:
                 overlapping = True
                 print("* ", elf_1, " overlapping ", elf_2)
 
-        elif elf_1_first == elf_2_first or elf_1_last == elf_2_last:  # start equal - always overlap
-            overlapping = True
-            print("** ", elf_1, " overlapping ", elf_2)
-
-          # == elf_2_first < elf_1_first:
-        elif elf_1_first > elf_2_first:
-            print(elf_1_first, ">", elf_2_first, elf_1_first > elf_2_first)
-            if elf_1_last < elf_2_last:
+        if elf_2_first > elf_1_first:
+            if elf_2_first <= elf_1_last:
                 overlapping = True
-                print("*** ", elf_1, " overlapping ", elf_2)
+                print("** ", elf_1, " overlapping ", elf_2)
 
+        if elf_1_first == elf_2_first or elf_1_first == elf_2_last:
+            overlapping = True
+
+        if elf_1_last == elf_2_first or elf_1_last == elf_2_last:
+            overlapping = True
 
         if overlapping:
             overlap += 1
         break
-
 
 
 print("Overlap: ", overlap)
