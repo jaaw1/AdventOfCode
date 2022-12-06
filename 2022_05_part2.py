@@ -52,8 +52,14 @@ for line in Lines:
         var_to = int(row[5])
 
         print(var_move, var_from, var_to)
+
+        mover = []
+
         for h in range(var_move):
-            columns[var_to - 1].insert(0, columns[var_from - 1].pop(0))
+            mover.insert(0, columns[var_from - 1].pop(0))
+
+        for g in range(var_move):
+            columns[var_to - 1].insert(0, mover.pop(0))
         print(columns[0], columns[1], columns[2])
         print(row)
         row = []
