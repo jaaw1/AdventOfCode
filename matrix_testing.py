@@ -50,6 +50,7 @@ def merge_contiguous_digits(row):
         merged_number = int(merged_number)
         yield merged_cells, merged_number
 
+
 def find_2_3_digit_numbers(data):
     numbers = {}  # Store 2-3 digit numbers and their positions
     for row_idx, row in enumerate(data):

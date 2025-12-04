@@ -175,6 +175,76 @@ def find_numbers(matrix, digits, symbols):
         print(f'Total value: {total_value}')
 
 
+def scan_row(digits, hit_y, hit_x):
+
+    number = []
+
+    # Check left
+    for i in range(hit_x, -1, -1):
+        if digits[hit_y][0][i]:
+            number.insert(0, (hit_y, i))
+        else:
+            break
+
+    # Check right
+    for j in range(hit_x + 1, len(digits[0][0])):
+        if digits[hit_y][0][j]:
+            number.append((hit_y, j))
+        else:
+            break
+
+
+    unique = list(set(tuple(number)))
+
+    return unique
+
+
+def number_from_digits(digit, digits):
+    number = 0
+    for i in range(len(digit)):
+        number += digits[[digit[i][0]][digit[i][1]]]
+    print(number)
+    return number
+
+
+def find_adjacent_digits(digits, matrix, y, x):
+
+    found_digits = []
+    new_digit = []
+
+    for i in range(y - 1, y + 2):
+        for j in range(x - 1, x + 2):
+            # Check if True (is digit)
+            if digits[i][0][j]:
+                if len(found_digits) < 2:
+                    print("scan row")
+                    found_digits.append(scan_row(digits, i, j))
+
+    found_digits = [ele for ele in found_digits if ele != []]
+    found_digits = list(set(tuple(found_digits)))
+
+    if len(found_digits) == 2:
+        print("YEY! ADD TO SUM")
+        for u in range(2):
+            digit = 0
+            for y in range(len(found_digits[u])):
+                digit += found_digits[u][y]
+            print(digit, end=" ")
+
+        print(digit)
+
+
+def find_parts(symbols, digits, matrix):
+
+    for i in range(len(symbols)):
+        for j in range(len(symbols[0][0])):
+
+            # Check if True (is symbol)
+            if symbols[i][0][j]:
+                print("symbol ", matrix[i][0][j])
+                find_adjacent_digits(digits, matrix, i, j)
+
+
 # Creating the Matrix
 matrix = []
 for line in Lines:
@@ -202,5 +272,12 @@ adjacency_check_map = vectorized_check(matrix, periods_pattern)
 
 
 #print(digits, "\n")
-find_numbers(matrix, digits, symbols)
+
+# THIS WORKS FOR PART I
+# find_numbers(matrix, digits, symbols)
+
+# PART II
+
+find_parts(symbols, digits, matrix)
+
 
