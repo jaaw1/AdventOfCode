@@ -13,18 +13,15 @@ for line in Lines:
             point -= 1
             if point == -1:
                 point = 99
-
+            if point == 0:
+                counter += 1
     else:
         for i in range(amount):
             point += 1
             if point == 100:
                 point = 0
-
-    if point == 0:
-        counter += 1
+            if point == 0:
+                counter += 1
 
 
 print(counter)
-
-
-
