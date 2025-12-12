@@ -30,13 +30,13 @@ with open('2025_day04_text.txt') as f:
 # Convert to 2D character array
 A = np.array([list(row) for row in lines])
 
-print(A)
+#print(A)
 
 papers = (A == '@').astype(int)
 row = A.shape[0]
 column = A.shape[1] + 2
 
-print(row, column)
+#print(row, column)
 print(papers)
 X = np.zeros(row,).astype(int)
 Y = np.zeros((column, 1)).astype(int)
@@ -50,15 +50,24 @@ papers = np.column_stack((papers, Y))
 
 print(papers)
 
-rolls = 0
 
-for i in range(1, row+1):
-    #print("Row ", i, "/ Column ", end=" ")
-    for j in range(1, column):
-        if papers[i][j] == 1:
-            #print("hit:", j, end=" ")
-            rolls += count_neighbors(i, j, papers)
-        #print(i, j)
+removed_total = 0
+rolls = 1
+while rolls > 0:
+    rolls = 0
+    for i in range(1, row+1):
+        #print("Row ", i, "/ Column ", end=" ")
+        for j in range(1, column):
+            if papers[i][j] == 1:
+                print()
+                #print("hit:", j, end=" ")
+                fork = count_neighbors(i, j, papers)
+                rolls += fork
+                if fork > 0:
+                    papers[i][j] = 0
+    print(rolls)
+            #print(i, j)
+    removed_total += rolls
     #print()
 
-print("ANSWER: ", rolls)
+print("ANSWER: ", removed_total)
