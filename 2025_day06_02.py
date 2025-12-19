@@ -1,5 +1,5 @@
 import math
-import numpy as np
+
 testdata = open('2025_day06_test.txt', 'r')
 data = open('2025_day06_text.txt', 'r')
 TestLines = testdata.readlines()
