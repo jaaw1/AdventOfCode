@@ -1,4 +1,5 @@
 import numpy as np
+from streamlit.runtime.stats import group_stats
 
 testdata = open('2025_day08_test.txt', 'r')
 data = open('2025_day08_text.txt', 'r')
@@ -24,10 +25,26 @@ p2 = np.array((1, 1, 1))
 
 d = np.linalg.norm(p1 - p2)
 print(d)
+"""
+import numpy as np
+from sklearn.cluster import DBSCAN
+
+# xyz points, shape (1000, 3)
+points = np.random.rand(1000, 3)
+
+db = DBSCAN(eps=0.05, min_samples=2).fit(points)
+labels = db.labels_
+
+print(labels)
+"""
+all_groups = []
 
 
-class Vector_groups:
-    def __init__(self, data):
-        self.group = np.array([data])
+class Groups:
+    def __init__(self, data, group_id):
+        self.data = data
+        self.id = group_id
 
+    def add_to_group(self, data):
+        self.data.append(data)
 
