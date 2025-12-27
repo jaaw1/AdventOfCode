@@ -16,8 +16,9 @@ def create_3d_vectors(data):
 
     return np.array(vectors)
 
-print(create_3d_vectors(TestLines))
+GG = create_3d_vectors(TestLines)
 
+print(GG)
 
 
 p1 = np.array((1, 2, 3))
@@ -44,7 +45,40 @@ class Groups:
     def __init__(self, data, group_id):
         self.data = data
         self.id = group_id
+        self.size = len(self.data)
+
 
     def add_to_group(self, data):
         self.data.append(data)
+        self.size = len(self.data)
 
+    def shortest_distance_to_vector_in_group(self, vector):
+        distances = []
+        for item in self.data:
+            distance = np.linalg.norm(item - vector)
+            distances.append(distance)
+            #print(distances)
+        return min(distances)
+
+    def is_vector_in_this_group(self, vector):
+        return any(np.array_equal(vector, x) for x in self.data)
+
+
+    def __str__(self):
+        return f'Size: {self.size}\\nLast: {self.data[-1]}'
+
+
+d = Groups(list([GG[0], GG[1]]), 1)
+print(d)
+
+r = d.shortest_distance_to_vector_in_group(GG[2])
+print(r)
+
+h = d.is_vector_in_this_group(GG[0])
+print(h)
+
+hh = d.is_vector_in_this_group(GG[8])
+print(hh)
+
+
+for i in range(len(GG)):
