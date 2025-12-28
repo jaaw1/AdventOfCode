@@ -1,6 +1,6 @@
 import numpy as np
 import math
-from streamlit.runtime.stats import group_stats
+#from streamlit.runtime.stats import group_stats
 
 testdata = open('2025_day08_test.txt', 'r')
 data = open('2025_day08_text.txt', 'r')
@@ -17,7 +17,18 @@ def create_3d_vectors(data):
 
     return np.array(vectors)
 
+
+def merge_groups(groups, ind1, ind2):
+    print(ind1, ind2)
+    groups[ind1].data.append(groups[ind2].data)
+
+    print(groups[ind1])
+    groups.pop(ind2)
+
+
+
 points = create_3d_vectors(Lines)
+
 
 print(points)
 
@@ -61,19 +72,62 @@ class Groups:
             #print(distances)
         return min(distances)
 
+
+
+
+
     def is_vector_in_this_group(self, vector):
+        print(self.data, vector, self.data == vector)
         return any(np.array_equal(vector, x) for x in self.data)
 
 
     def __str__(self):
-        return f'Size: {self.size}\\nLast: {self.data[-1]}'
+        return f'Size: {self.size}  Last: {self.data[-1]}'
 
 
+for i in range(len(points)):
+    group = Groups(points[i], i)
+    all_groups.append(group)
+
+for x in range(len(points)):
+
+    nearest_group = 10000000
+    nearest_id = 1001
+    native = 1001
+
+    # get native group
+    for i in range(len(all_groups)):
+        isit = all_groups[i].is_vector_in_this_group(points[x])
+        print(isit, points[x], all_groups[i].data)
+        if isit:
+            native = i
+            print("Native: ", native)
+            break
+
+    for y in range(len(all_groups)):
+        if y == i:
+            pass
+        else:
+            nearest = all_groups[y].shortest_distance_to_vector_in_group(points[x])
+        if nearest < nearest_group:
+            nearest_group == nearest
+            nearest_id = y
+
+    merge_groups(all_groups, native, nearest_id)
+
+
+"""
 d = Groups(list([points[0], points[1]]), 1)
 print(d)
-
+print("Name: ", type(d).__name__)
 r = d.shortest_distance_to_vector_in_group(points[2])
 print(r)
+
+ff = Groups(list([points[2], points[3]]), 1)
+gg = Groups(list([points[4], points[5]]), 1)
+
+tt = ff.merge_groups(gg)
+print(tt)
 
 h = d.is_vector_in_this_group(points[0])
 print(h)
@@ -86,4 +140,4 @@ print(group_all)
 for i in range(len(points)):
     vector = points[i]
     print(vector)
-    input("wait")
+    input("wait")"""
