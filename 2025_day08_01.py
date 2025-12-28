@@ -1,4 +1,5 @@
 import numpy as np
+import math
 from streamlit.runtime.stats import group_stats
 
 testdata = open('2025_day08_test.txt', 'r')
@@ -16,9 +17,9 @@ def create_3d_vectors(data):
 
     return np.array(vectors)
 
-GG = create_3d_vectors(TestLines)
+points = create_3d_vectors(Lines)
 
-print(GG)
+print(points)
 
 
 p1 = np.array((1, 2, 3))
@@ -68,17 +69,21 @@ class Groups:
         return f'Size: {self.size}\\nLast: {self.data[-1]}'
 
 
-d = Groups(list([GG[0], GG[1]]), 1)
+d = Groups(list([points[0], points[1]]), 1)
 print(d)
 
-r = d.shortest_distance_to_vector_in_group(GG[2])
+r = d.shortest_distance_to_vector_in_group(points[2])
 print(r)
 
-h = d.is_vector_in_this_group(GG[0])
+h = d.is_vector_in_this_group(points[0])
 print(h)
 
-hh = d.is_vector_in_this_group(GG[8])
+hh = d.is_vector_in_this_group(points[8])
 print(hh)
 
-
-for i in range(len(GG)):
+group_all = Groups(list(points[:]), 0)
+print(group_all)
+for i in range(len(points)):
+    vector = points[i]
+    print(vector)
+    input("wait")
