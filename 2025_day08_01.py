@@ -1,5 +1,8 @@
 import numpy as np
-print(np.__version__)
+from scipy.spatial import cKDTree
+from scipy.spatial.distance import pdist, squareform
+from collections import defaultdict
+#print(np.__version__)
 import math
 #from streamlit.runtime.stats import group_stats
 
@@ -8,10 +11,10 @@ data = open('2025_day08_text.txt', 'r')
 TestLines = testdata.readlines()
 Lines = data.readlines()
 
-ss = np.array(([[1, 2, 3], [7, 8, 9]]))
+"""ss = np.array(([[1, 2, 3], [7, 8, 9]]))
 print(ss)
 sss = np.append(ss, np.array(([[4, 5, 6]])), axis=0)
-print(sss)
+print(sss)"""
 
 
 def create_3d_vectors(data):
@@ -27,12 +30,12 @@ def create_3d_vectors(data):
 def merge_groups(groups, ind1, ind2):
 
     a, b = groups[ind1], groups[ind2]
-    print(len(a.data.shape))
+    #print(len(a.data.shape))
     if len(a.data.shape) > 1:
         a.data = np.append(a.data, [b.data], axis=0)
     else:
         a.data = np.append([a.data], [b.data], axis=0)
-    print(len(a.data.shape))
+    #print(len(a.data.shape))
 
     groups.pop(ind2)
     return a.data
@@ -41,7 +44,9 @@ def merge_groups(groups, ind1, ind2):
 
 points = create_3d_vectors(TestLines)
 
-rem = np.array([points[0]])
+
+
+"""rem = np.array([points[0]])
 input(rem)
 drem = np.append(rem, np.array([points[1]]), axis=0)
 input(drem)
@@ -49,19 +54,19 @@ mer = np.array([points[2]])
 dmer = np.append(mer, np.array([points[3]]), axis=0)
 print(dmer)
 merde = np.append(drem, dmer, axis=0)
-input(merde)
+input(merde)"""
 
 
 
 #print(points)
 
-
+"""
 p1 = np.array((1, 2, 3))
 p2 = np.array((1, 1, 1))
 
 d = np.linalg.norm(p1 - p2)
-#print(d)
-"""
+print(d)
+
 import numpy as np
 from sklearn.cluster import DBSCAN
 
@@ -114,18 +119,10 @@ for i in range(len(points)):
 
 
 
-print(merge_groups(all_groups, 0, 1))
-input("115 wait")
+"""print(merge_groups(all_groups, 0, 1))
+input("115 wait")"""
 
-#CONTINUE HERE
 
-# 1. loop points
-    #for every point, find its closest neighbor
-# 2. Find group of closest neighbor
-# 3 Find group of the point in the loop in turn
-# 4. Merge these two groups
-
-#
 """
 for x in range(len(points)):
 
@@ -157,7 +154,7 @@ for x in range(len(points)):
 
 
 
-d = Groups(list([points[0], points[1]]), 1)
+"""d = Groups(list([points[0], points[1]]), 1)
 print("rivi 129", d)
 print("Name: ", type(d).__name__)
 r = d.shortest_distance_to_vector_in_group(points[2])
@@ -184,13 +181,61 @@ print("rivi 146", h)
 hh = d.is_vector_in_this_group(points[8])
 print( "rivi 149", hh)
 
-input("wait")
-group_all = Groups(list(points[:]), 0)
-print(group_all)
+input("wait")"""
+#group_all = Groups(list(points[:]), 0)
+#print(group_all)
+
+"""
 for i in range(len(points)):
     vector = points[i]
     print(vector)
     reve = group_all.is_vector_in_this_group(vector)
     print(reve)
 
-    #input("wait")
+    #input("wait")"""
+
+#e_points = np.random.rand(40, 3)
+#print(e_points)
+
+#CONTINUE HERE (SKIP THIS VERSION) NEW ONE UNDER
+
+# 1. loop points
+    #for every point, find its closest neighbor
+# 2. Find group of closest neighbor
+# 3 Find group of the point in the loop in turn
+# 4. Merge these two groups
+
+#
+
+#for i in range(len(all_groups)):
+#    print(all_groups[i].data)
+
+#NEW VERSION
+# 1 list of distances (pairs) ordered by the length (indices of the points in the points list)
+# 2 (pick the 10 first (test) or 100 first and join them by the indices
+
+# Compute all pairwise distances (condensed form)
+distances = pdist(points)  # length = N*(N-1)/2
+
+# Get indices that would sort distances
+order = np.argsort(distances)
+
+# Convert condensed indices → (i, j) pairs
+pairs = []
+N = len(points)
+
+k = 0
+for i in range(N):
+    for j in range(i + 1, N):
+        pairs.append((i, j))
+        k += 1
+
+# Closest pairs in order
+closest_pairs = [(pairs[idx], distances[idx]) for idx in order]
+
+kk = 0
+for pair in closest_pairs:
+    print(pair)
+    kk += 1
+    if kk > 10:
+        break
