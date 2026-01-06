@@ -232,10 +232,68 @@ for i in range(N):
 
 # Closest pairs in order
 closest_pairs = [(pairs[idx], distances[idx]) for idx in order]
+print(closest_pairs)
+parent = list(range(N))
 
-kk = 0
+size = [1] * N
+
+a_pairs = np.array([])
+"""
 for pair in closest_pairs:
+    a_pair = np.array([pair[0]])
+    a_pairs = np.append(a_pairs, a_pair)
+
+
+for pair in a_pairs:
     print(pair)
-    kk += 1
-    if kk > 10:
-        break
+"""
+# How to use this code? Is "pairs" in right format? Or "closest_pairs"?
+
+
+def find(x):
+    if parent[x] != x:
+        parent[x] = find(parent[x])  # path compression
+    return parent[x]
+
+
+def union(a, b):
+    root_a = find(a)
+    root_b = find(b)
+
+    if root_a == root_b:
+        return  # already in the same group
+
+    # union by size (attach smaller tree to larger)
+    if size[root_a] < size[root_b]:
+        root_a, root_b = root_b, root_a
+
+    parent[root_b] = root_a
+    size[root_a] += size[root_b]
+
+for i, j in pairs:
+    union(i, j)
+
+for i in range(N):
+    find(i)
+
+group_sizes = [size[i] for i in range(N) if parent[i] == i]
+
+largest_3 = sorted(group_sizes, reverse=True)[:3]
+print(largest_3)
+
+from collections import defaultdict
+
+groups = defaultdict(list)
+
+for i in range(N):
+    root = find(i)
+    groups[root].append(i)
+
+# sizes
+group_sizes = [len(g) for g in groups.values()]
+
+[size[i] for i in range(N) if parent[i] == i]
+
+print(sorted(group_sizes, reverse=True)[:3])
+
+
